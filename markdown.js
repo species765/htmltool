@@ -57,7 +57,7 @@ function mdInlineToHTML(text, groups) {
   }
   // Ruby
   if (groups.includes('ruby')) {
-    html = html.replace(/_(.+?)\/(.+?)\/_/g, '<ruby>$1<rt>$2</rt></ruby>');
+    html = html.replace(/_([^_]+?)\/(.+?)\/_/g, '<ruby>$1<rt>$2</rt></ruby>');
   }
   // Underline
   if (groups.includes('underline')) {
