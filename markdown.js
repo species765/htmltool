@@ -8,10 +8,10 @@ function nodeToHTML(node, targetFormat = "all") {
         html += childNode.textContent;
       }
     } else if (childNode.nodeType === Node.ELEMENT_NODE) {
-      if (childNode.tagName === "pre") {
+      if (childNode.tagName.toLowerCase() === "pre") {
         childNode.innerHTML = nodeToHTML(childNode, "pre")
         html += `${childNode.outerHTML}`;
-      } else if (childNode.tagName === "code") {
+      } else if (childNode.tagName.toLowerCase() === "code") {
         childNode.innerHTML = nodeToHTML(childNode, "code")
         html += `${childNode.outerHTML}`;
       } else {
