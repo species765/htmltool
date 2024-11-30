@@ -672,12 +672,6 @@ p {
 .highlight {
   color: #6cb6ff;
 }
-.chat-container ol li strong {
-  color: white;
-}
-.chat-container ol li em {
-  color: white;
-}
 .texthtml img, .texthtml table {
   max-width: 100%;
 }
