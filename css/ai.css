@@ -689,3 +689,6 @@ table, th, td {
 .group {
   color: #0084FF/* #0041cc */;
 }
+.hidden {
+  display: none;
+}
