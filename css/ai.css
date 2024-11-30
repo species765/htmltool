@@ -1,4 +1,5 @@
 
+
 /* General styles */
 body {
   margin: 0;
@@ -75,7 +76,7 @@ body {
   width: 100%;
   background-color: #282a2d;
   overflow-y: auto;
-  max-height: 180px;
+  max-height: 300px;
 }
 
 #training-data:hover .prompt-option {
@@ -400,6 +401,7 @@ body {
   margin: 10px;
   border: none;
   border-radius: 5px;
+  display: block;
 }
 
 .user {
@@ -526,7 +528,7 @@ body {
 /* Text and HTML styles */
 .texthtml {
   width: 100%;
-  max-height: 400px;
+  max-height: 620px;
   overflow-y: scroll;
   overflow-x: hidden;
   border-radius: 5px;
@@ -536,7 +538,12 @@ body {
   font-size: 16px;
   box-sizing: border-box;
 }
-
+.function .texthtml {
+  max-height: 200px;
+}
+.function-call .texthtml {
+  max-height: 200px;
+}
 /* Markdown styles */
 .markdown {
   background-color: transparent;
@@ -663,7 +670,7 @@ p {
   padding: 2px;
 }
 .chat-container ol, .chat-container ul {
-  padding-left: 40px;
+  padding-left: 30px;
 }
 .chat-container ol {
   list-style-type:upper-roman;
@@ -671,6 +678,12 @@ p {
 /* decimal, katakana, cjk-ideographic, upper-roman */
 .highlight {
   color: #6cb6ff;
+}
+.chat-container ol li strong {
+  color: white;
+}
+.chat-container ol li em {
+  color: white;
 }
 .texthtml img, .texthtml table {
   max-width: 100%;
