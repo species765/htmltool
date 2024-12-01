@@ -30,7 +30,7 @@ async function getHeadlinesNHK() {
       let doc = parser.parseFromString(html, 'text/html');
       const timeJapan = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
       const timestamp = formatDateToJapanese(timeJapan).formattedDate
-      const baseUrl = "https://www3.nhk.or.jp";
+      const baseURL = "https://www3.nhk.or.jp";
       const headlines = [];
       const listItems = doc.querySelectorAll("ul li")
       let count = 0; // Counter to track iterations
@@ -68,8 +68,8 @@ async function getHeadlinesNHK() {
       });
       // Build the result object
       const result = {
-        timestamp
-        baseUrl,
+        timestamp,
+        baseURL,
         headlines,
       };
       return { news: result };
