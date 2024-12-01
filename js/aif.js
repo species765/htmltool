@@ -54,15 +54,17 @@ async function getHeadlinesNHK() {
         const title = titleElement.textContent.trim();
         let date = timeElement ? timeElement.getAttribute("datetime") : "";
         const keyword = keywordElement ? keywordElement.textContent.trim() : "";
-        let recently = false;
+        //let recently = false;
         if (date !== "") {
+/*
           const timeJapanObj = new Date(timeJapan);
           const publishedTime = new Date(date);
           const limitNew = new Date(publishedTime.getTime() + 30 * 60 * 1000);
           recently = timeJapanObj < limitNew;
+*/
           date = formatDateToJapanese(date).formattedDate
         }
-        headlines.push({ path, title, date, recently, keyword });
+        headlines.push({ path, title, date, keyword });
       });
       // Build the result object
       const result = {
