@@ -31,15 +31,15 @@ async function getHeadlinesNHK() {
         const title = titleElement.textContent.trim();
         const date = timeElement ? timeElement.getAttribute("datetime") : "";
         const keyword = keywordElement ? keywordElement.textContent.trim() : "";
-        let isNew = false;
+        let recently = false;
         if (date !== "") {
           const timeJapan = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
           const timeJapanObj = new Date(timeJapan);
           const publishedTime = new Date(date);
           const limitNew = new Date(publishedTime.getTime() + 30 * 60 * 1000);
-          isNew = timeJapanObj < limitNew;
+          recently = timeJapanObj < limitNew;
         }
-        headlines.push({ path, title, date, isNew, keyword });
+        headlines.push({ path, title, date, recently, keyword });
       });
       // Build the result object
       const result = {
