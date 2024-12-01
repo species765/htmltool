@@ -48,7 +48,7 @@ async function getHeadlinesNHK() {
 /*
         let thumb = "/news/parts16/images/common/noimg_default_s.gif";
         if (imgElement) {
-          //thumb = imgElement.getAttribute("data-src");
+          thumb = imgElement.getAttribute("data-src");
         }
 */
         const title = titleElement.textContent.trim();
