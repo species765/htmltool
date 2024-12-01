@@ -1,3 +1,25 @@
+function formatDateToJapanese(dateInput) {
+  const date = new Date(dateInput);
+
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // getMonth() returns 0 for January, so add 1
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  const formattedDate = `${year}年${month}月${day}日 ${hours}時${minutes}分`;
+
+  return {
+    formattedDate: formattedDate,
+    year: year,
+    month: month,
+    day: day,
+    hours: hours,
+    minutes: minutes
+  };
+}
+
+
 async function getHeadlinesNHK() {
   try {
     const response = await fetch('https://www3.nhk.or.jp/news/catnew.html');
@@ -6,7 +28,8 @@ async function getHeadlinesNHK() {
       html = minifyHTML(html)
       let parser = new DOMParser();
       let doc = parser.parseFromString(html, 'text/html');
-      
+      const timeJapan = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+      const timestamp = formatDateToJapanese(timeJapan).formattedDate
       const baseUrl = "https://www3.nhk.or.jp";
       const headlines = [];
       const listItems = doc.querySelectorAll("ul li")
@@ -29,20 +52,21 @@ async function getHeadlinesNHK() {
         }
 */
         const title = titleElement.textContent.trim();
-        const date = timeElement ? timeElement.getAttribute("datetime") : "";
+        let date = timeElement ? timeElement.getAttribute("datetime") : "";
         const keyword = keywordElement ? keywordElement.textContent.trim() : "";
         let recently = false;
         if (date !== "") {
-          const timeJapan = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
           const timeJapanObj = new Date(timeJapan);
           const publishedTime = new Date(date);
           const limitNew = new Date(publishedTime.getTime() + 30 * 60 * 1000);
           recently = timeJapanObj < limitNew;
+          date = formatDateToJapanese(date).formattedDate
         }
         headlines.push({ path, title, date, recently, keyword });
       });
       // Build the result object
       const result = {
+        timestamp
         baseUrl,
         headlines,
       };
