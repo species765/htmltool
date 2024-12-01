@@ -10,19 +10,24 @@ async function getHeadlinesNHK() {
       const baseUrl = "https://www3.nhk.or.jp";
       const headlines = [];
       const listItems = doc.querySelectorAll("ul li")
+      let count = 0; // Counter to track iterations
       listItems.forEach((item) => {
+        if (count >= 10) return; // Exit after 10 iterations
+        count++;
         const pathElement = item.querySelector("a");
-        const imgElement = item.querySelector("img");
+        //const imgElement = item.querySelector("img");
         const titleElement = item.querySelector(".title");
         const timeElement = item.querySelector("time");
         const keywordElement = item.querySelector(".i-word");
     
         // Get data from elements
         const path = pathElement.getAttribute("href");
+/*
         let thumb = "/news/parts16/images/common/noimg_default_s.gif";
         if (imgElement) {
-          thumb = imgElement.getAttribute("data-src");
+          //thumb = imgElement.getAttribute("data-src");
         }
+*/
         const title = titleElement.textContent.trim();
         const date = timeElement ? timeElement.getAttribute("datetime") : "";
         const keyword = keywordElement ? keywordElement.textContent.trim() : "";
@@ -34,7 +39,7 @@ async function getHeadlinesNHK() {
           const limitNew = new Date(publishedTime.getTime() + 30 * 60 * 1000);
           isNew = timeJapanObj < limitNew;
         }
-        headlines.push({ path, thumb, title, date, isNew, keyword });
+        headlines.push({ path, title, date, isNew, keyword });
       });
       // Build the result object
       const result = {
