@@ -144,8 +144,7 @@ body {
 }
 
 #functionbtn.active {
-  background: #ffffff;
-  color: #000000;
+  color: #87a9ff;
 }
 /* Model dropdown styles */
 #model {
@@ -528,7 +527,7 @@ body {
 /* Text and HTML styles */
 .texthtml {
   width: 100%;
-  max-height: 620px;
+  max-height: 380px;
   overflow-y: scroll;
   overflow-x: hidden;
   border-radius: 5px;
@@ -655,6 +654,11 @@ pre {
   user-select: none;
 }
 /* Other styles */
+ruby {
+  margin-right: 1px;
+  margin-left: 1px;
+}
+
 rt {
   font-size: 0.75em;
   color: #e2e2e5;
@@ -670,20 +674,14 @@ p {
   padding: 2px;
 }
 .chat-container ol, .chat-container ul {
-  padding-left: 30px;
+  padding-left: 35px;
 }
 .chat-container ol {
-  list-style-type:upper-roman;
+  list-style-type: decimal;
 }
 /* decimal, katakana, cjk-ideographic, upper-roman */
 .highlight {
   color: #6cb6ff;
-}
-.chat-container ol li strong {
-  color: white;
-}
-.chat-container ol li em {
-  color: white;
 }
 .texthtml img, .texthtml table {
   max-width: 100%;
@@ -700,7 +698,7 @@ table, th, td {
   color: #ff7f00;
 }
 .group {
-  color: #0084FF/* #0041cc */;
+  color: #007fff/* #0041cc */;
 }
 .hidden {
   display: none;
