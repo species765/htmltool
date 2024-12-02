@@ -51,7 +51,7 @@ async function getHeadlinesNHK() {
           thumb = imgElement.getAttribute("data-src");
         }
 */
-        const title = titleElement.textContent.trim();
+        const title = titleElement.textContent.trim().replace(/ /g, "　");
         let date = timeElement ? timeElement.getAttribute("datetime") : "";
         const keyword = keywordElement ? keywordElement.textContent.trim() : "";
         //let recently = false;
