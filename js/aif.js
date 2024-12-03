@@ -7,7 +7,7 @@ function formatDateToJapanese(dateInput) {
   const hours = date.getHours();
   const minutes = date.getMinutes();
 
-  const formattedDate = `${year}年${month}月${day}日　${hours}時${minutes}分`;
+  const formattedDate = `${year}年${month}月${day}日 ${hours}時${minutes}分`;
 
   return {
     formattedDate: formattedDate,
@@ -51,7 +51,7 @@ async function getHeadlinesNHK() {
           thumb = imgElement.getAttribute("data-src");
         }
 */
-        const title = titleElement.textContent.trim().replace(/ /g, "　");
+        const title = titleElement.textContent.trim();
         let date = timeElement ? timeElement.getAttribute("datetime") : "";
         const keyword = keywordElement ? keywordElement.textContent.trim() : "";
         //let recently = false;
