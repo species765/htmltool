@@ -103,7 +103,7 @@ function stringJsObjToJson(input) {
 
 
 
-async function getNewsDetail(Url) {
+async function getNewsDetailNHK(Url) {
   try {
     const response = await fetch(Url);
     if (response.ok) {
