@@ -111,7 +111,11 @@ async function getNewsDetailNHK(Url) {
       const html = await response.text();
       let parser = new DOMParser();
       let doc = parser.parseFromString(html, 'text/html');
-      let objString = doc.querySelector(".module--detail script").textContent.trim().replace(/^var __DetailProp__ = /, "").replace(/;$/,"")
+      let detailEle = doc.querySelector(".module--detail script")
+      if (!detailEle) {
+        return { newsDetail: Url };
+      }
+      let objString = detailEle.textContent.trim().replace(/^var __DetailProp__ = /, "").replace(/;$/,"")
       let jsonvar = stringJsObjToJson(objString)
       let newsDetail = { "baseUrl": "https://www3.nhk.or.jp/news/" }
       if (jsonvar.video && jsonvar.video !== "") {
