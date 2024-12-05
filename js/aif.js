@@ -39,6 +39,7 @@ async function getHeadlinesNHK(category, limit) {
   const selectedUrl = headlinesUrls[category] || headlinesUrls["主要"];
   const headlines = [];
   let currentUrl = selectedUrl;
+  limit = limit ?? 7;
   let fetchedCount = 0;
 
   try {
