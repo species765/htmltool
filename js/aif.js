@@ -36,7 +36,7 @@ async function getHeadlinesNHK(category, limit) {
     headlinesUrl = headlinesUrls[category];
   };
   let listNum = 7;
-  if (limit) {
+  if (limit > 0) {
     listNum = limit;
   }
   try {
