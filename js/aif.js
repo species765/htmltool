@@ -117,7 +117,8 @@ async function getNewsDetailNHK(Url) {
       let doc = parser.parseFromString(html, 'text/html');
       let detailEle = doc.querySelector(".module--detail script")
       if (!detailEle) {
-        return { newsDetail: Url };
+        const altResult = `<iframe src="${Url}" loading="lazy"></iframe>`
+        return { newsDetail: altResult };
       }
       let objString = detailEle.textContent.trim().replace(/^var __DetailProp__ = /, "").replace(/;$/,"")
       let jsonvar = stringJsObjToJson(objString)
