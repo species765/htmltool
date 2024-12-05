@@ -21,83 +21,69 @@ function formatDateToJapanese(dateInput) {
 
 
 async function getHeadlinesNHK(category, limit) {
-  let headlinesUrl = "https://www3.nhk.or.jp/news/catnew.html";
+  const baseUrl = "https://www3.nhk.or.jp/news/";
   const headlinesUrls = {
-    "社会": "https://www3.nhk.or.jp/news/cat01.html",
-    "気象・災害": "https://www3.nhk.or.jp/news/saigai.html",
-    "科学・文化": "https://www3.nhk.or.jp/news/cat03.html",
-    "政治": "https://www3.nhk.or.jp/news/cat04.html",
-    "ビジネス": "https://www3.nhk.or.jp/news/business.html",
-    "国際": "https://www3.nhk.or.jp/news/cat06.html",
-    "スポーツ": "https://www3.nhk.or.jp/news/cat07.html",
-    "暮らし": "https://www3.nhk.or.jp/news/cat02.html"
+    "主要": "json16/syuyo.json",
+    "新着": "json16/new_001.json",
+    "社会": "json16/cat01_001.json",
+    "気象・災害": "json16/cat08_001.json",
+    "科学・文化": "json16/cat03_001.json",
+    "政治": "json16/cat04_001.json",
+    "ビジネス": "json16/cat05_001.json",
+    "国際": "json16/cat06_001.json",
+    "スポーツ": "json16/cat07_001.json",
+    "暮らし": "json16/cat02_001.json",
+    "地域": "json16/cat09_001.json"
   };
-  if (headlinesUrls[category]) {
-    headlinesUrl = headlinesUrls[category];
-  };
-  let listNum = 7;
-  if (limit > 0) {
-    listNum = limit;
-  }
+
+  const selectedUrl = headlinesUrls[category] || headlinesUrls["主要"];
+  const headlines = [];
+  let currentUrl = selectedUrl;
+  let fetchedCount = 0;
+
   try {
-    const response = await fetch(headlinesUrl);
-    if (response.ok) {
-      let html = await response.text();
-      html = minifyHTML(html)
-      let parser = new DOMParser();
-      let doc = parser.parseFromString(html, 'text/html');
-      const timeJapan = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
-      const timestamp = formatDateToJapanese(timeJapan).formattedDate
-      const baseUrl = "https://www3.nhk.or.jp";
-      const headlines = [];
-      const listElement = doc.querySelector(".content--items ul")
-      const listItems = listElement.querySelectorAll("li")
-      let count = 0; // Counter to track iterations
-      listItems.forEach((item) => {
-        if (count >= listNum) return; // Exit after 10 iterations
-        count++;
-        const pathElement = item.querySelector("a");
-        //const imgElement = item.querySelector("img");
-        const titleElement = item.querySelector(".title");
-        const timeElement = item.querySelector("time");
-        const keywordElement = item.querySelector(".i-word");
-    
-        // Get data from elements
-        const path = pathElement.getAttribute("href");
-/*
-        let thumb = "/news/parts16/images/common/noimg_default_s.gif";
-        if (imgElement) {
-          thumb = imgElement.getAttribute("data-src");
-        }
-*/
-        const title = titleElement.textContent.trim();
-        let date = timeElement ? timeElement.getAttribute("datetime") : "";
-        const keyword = keywordElement ? keywordElement.textContent.trim() : "";
-        //let recently = false;
-        if (date !== "") {
-/*
-          const timeJapanObj = new Date(timeJapan);
-          const publishedTime = new Date(date);
-          const limitNew = new Date(publishedTime.getTime() + 30 * 60 * 1000);
-          recently = timeJapanObj < limitNew;
-*/
-          date = formatDateToJapanese(date).formattedDate
-        }
-        headlines.push({ path, title, date, keyword });
-      });
-      // Build the result object
-      const result = {
-        timestamp,
-        baseUrl,
-        headlines,
-      };
-      return { news: result };
-    } else {
-      console.error('Failed to fetch HTML:', response.status);
-      return { news: "Failed to get news headlines" };
+    while (fetchedCount < limit) {
+      const response = await fetch(baseUrl + currentUrl);
+      if (!response.ok) {
+        console.error(`Failed to fetch JSON: ${response.status}`);
+        return { news: "Failed to get news headlines" };
+      }
+
+      const data = await response.json();
+      if (!data.channel || !data.channel.item) {
+        console.error("Invalid JSON structure");
+        return { news: "Invalid JSON structure" };
+      }
+
+      const items = data.channel.item;
+      for (const item of items) {
+        if (fetchedCount >= limit) break;
+        headlines.push({
+          link: item.link,
+          title: item.title,
+          date: item.pubDate ? formatDateToJapanese(item.pubDate).formattedDate : "",
+          keywords: item.word ? item.word.length > 0 ? item.word[0].title : "" : "",
+        });
+        fetchedCount++;
+      }
+
+      if (!data.channel.hasNext || fetchedCount >= limit) break;
+
+      // Update the URL for the next page
+      const nextPageNumber = currentUrl.match(/_(\d+)\.json$/)
+        ? parseInt(currentUrl.match(/_(\d+)\.json$/)[1], 10) + 1
+        : 2;
+
+      currentUrl = currentUrl.replace(/_\d+\.json$/, `_${String(nextPageNumber).padStart(3, '0')}.json`);
     }
+
+    const timeJapan = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+    const timestamp = formatDateToJapanese(timeJapan).formattedDate
+    return {
+      news: { timestamp, baseUrl, headlines },
+    };
   } catch (error) {
-    console.error('Error fetching HTML:', error);
+    console.error("Error fetching JSON:", error);
     return { news: "Failed to get news headlines" };
   }
 }
