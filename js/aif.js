@@ -93,12 +93,12 @@ async function getHeadlinesNHK(category, limit) {
       };
       return { news: result };
     } else {
-      return { news: "Failed to get news headlines" };
       console.error('Failed to fetch HTML:', response.status);
+      return { news: "Failed to get news headlines" };
     }
   } catch (error) {
-    return { news: "Failed to get news headlines" };
     console.error('Error fetching HTML:', error);
+    return { news: "Failed to get news headlines" };
   }
 }
 
@@ -179,11 +179,11 @@ async function getNewsDetailNHK(Url) {
       }
       return { newsDetail };
     } else {
-      return { news: "Failed to get news detail" };
       //console.error('Failed to fetch HTML:', response.status);
+      return { news: "Failed to get news detail" };
     }
   } catch (error) {
-    return { news: "Failed to get news detail" };
     //console.error('Error fetching HTML:', error);
+    return { news: "Failed to get news detail" };
   }
 }
