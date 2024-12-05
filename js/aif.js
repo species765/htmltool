@@ -32,7 +32,8 @@ async function getHeadlinesNHK() {
       const timestamp = formatDateToJapanese(timeJapan).formattedDate
       const baseUrl = "https://www3.nhk.or.jp";
       const headlines = [];
-      const listItems = doc.querySelectorAll("ul li")
+      const listElement = doc.querySelector("ul")
+      const listItems = listElement.querySelectorAll("li")
       let count = 0; // Counter to track iterations
       listItems.forEach((item) => {
         if (count >= 10) return; // Exit after 10 iterations
