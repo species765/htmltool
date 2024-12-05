@@ -94,11 +94,11 @@ async function getHeadlinesNHK(category, limit) {
       return { news: result };
     } else {
       return { news: "Failed to get news headlines" };
-      //console.error('Failed to fetch HTML:', response.status);
+      console.error('Failed to fetch HTML:', response.status);
     }
   } catch (error) {
     return { news: "Failed to get news headlines" };
-    //console.error('Error fetching HTML:', error);
+    console.error('Error fetching HTML:', error);
   }
 }
 
