@@ -20,9 +20,27 @@ function formatDateToJapanese(dateInput) {
 }
 
 
-async function getHeadlinesNHK() {
+async function getHeadlinesNHK(category, limit) {
+  let headlinesUrl = "https://www3.nhk.or.jp/news/catnew.html";
+  const headlinesUrls = {
+    "社会": "https://www3.nhk.or.jp/news/cat01.html",
+    "気象・災害": "https://www3.nhk.or.jp/news/saigai.html",
+    "科学・文化": "https://www3.nhk.or.jp/news/cat03.html",
+    "政治": "https://www3.nhk.or.jp/news/cat04.html",
+    "ビジネス": "https://www3.nhk.or.jp/news/business.html",
+    "国際": "https://www3.nhk.or.jp/news/cat06.html",
+    "スポーツ": "https://www3.nhk.or.jp/news/cat07.html",
+    "暮らし": "https://www3.nhk.or.jp/news/cat02.html"
+  };
+  if (headlinesUrls[category]) {
+    headlinesUrl = headlinesUrls[category];
+  };
+  let listNum = 7;
+  if (limit) {
+    listNum = limit;
+  }
   try {
-    const response = await fetch('https://www3.nhk.or.jp/news/catnew.html');
+    const response = await fetch(headlinesUrl);
     if (response.ok) {
       let html = await response.text();
       html = minifyHTML(html)
@@ -36,7 +54,7 @@ async function getHeadlinesNHK() {
       const listItems = listElement.querySelectorAll("li")
       let count = 0; // Counter to track iterations
       listItems.forEach((item) => {
-        if (count >= 10) return; // Exit after 10 iterations
+        if (count >= listNum) return; // Exit after 10 iterations
         count++;
         const pathElement = item.querySelector("a");
         //const imgElement = item.querySelector("img");
